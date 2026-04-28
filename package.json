@@ -1,0 +1,18 @@
+{
+  "name": "ata-gigun",
+  "version": "1.0.0",
+  "description": "ATA GiGUN — Nollywood Movie Discovery, Rating & Review Platform",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "seed": "cd server && npm run seed"
+  },
+  "keywords": ["nollywood", "movies", "reviews", "ratings"],
+  "author": "Pelumi Emmanuel Adeniyi",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
