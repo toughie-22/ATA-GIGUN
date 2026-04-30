@@ -4,12 +4,14 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { getNotifications, markNotificationsRead } from '../api/userApi';
 import { GiChiliPepper } from 'react-icons/gi';
-import { FiSearch, FiMenu, FiX, FiLogOut, FiUser, FiSun, FiMoon, FiBell } from 'react-icons/fi';
+import { FiSearch, FiMenu, FiX, FiLogOut, FiUser, FiSun, FiMoon, FiBell, FiHome, FiAward } from 'react-icons/fi';
+import { useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -254,6 +256,40 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
+        <div className="glass rounded-[2rem] border border-white/10 shadow-2xl px-2 py-3 flex justify-around items-center backdrop-blur-2xl bg-black/40">
+          <Link to="/" className={`flex flex-col items-center gap-1 px-4 py-1.5 rounded-2xl transition-all duration-300 ${location.pathname === '/' ? 'text-pepper-hot bg-pepper-hot/10 scale-110' : 'text-pepper-muted'}`}>
+            <FiHome size={22} />
+            <span className="text-[10px] font-black uppercase tracking-tighter">Home</span>
+          </Link>
+          
+          <Link to="/discover" className={`flex flex-col items-center gap-1 px-4 py-1.5 rounded-2xl transition-all duration-300 ${location.pathname === '/discover' ? 'text-pepper-hot bg-pepper-hot/10 scale-110' : 'text-pepper-muted'}`}>
+            <FiSearch size={22} />
+            <span className="text-[10px] font-black uppercase tracking-tighter">Discover</span>
+          </Link>
+          
+          <Link to="/hall-of-fame" className={`flex flex-col items-center gap-1 px-4 py-1.5 rounded-2xl transition-all duration-300 ${location.pathname === '/hall-of-fame' ? 'text-pepper-gold bg-pepper-gold/10 scale-110' : 'text-pepper-muted'}`}>
+            <FiAward size={22} />
+            <span className="text-[10px] font-black uppercase tracking-tighter">Elite</span>
+          </Link>
+          
+          {isAuthenticated ? (
+            <Link to={`/hall-of-fame/user/${user?._id}`} className={`flex flex-col items-center gap-1 px-4 py-1.5 rounded-2xl transition-all duration-300 ${location.pathname.includes('/user/') ? 'text-pepper-hot bg-pepper-hot/10 scale-110' : 'text-pepper-muted'}`}>
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-[10px] font-black text-white shadow-lg">
+                {user?.username?.[0]?.toUpperCase()}
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-tighter">Me</span>
+            </Link>
+          ) : (
+            <Link to="/login" className={`flex flex-col items-center gap-1 px-4 py-1.5 rounded-2xl transition-all duration-300 ${location.pathname === '/login' ? 'text-pepper-hot bg-pepper-hot/10 scale-110' : 'text-pepper-muted'}`}>
+              <FiUser size={22} />
+              <span className="text-[10px] font-black uppercase tracking-tighter">Join</span>
+            </Link>
+          )}
+        </div>
+      </nav>
     </nav>
   );
 };
