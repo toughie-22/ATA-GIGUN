@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api/axios';
 import { FiAward, FiStar, FiTrendingUp, FiUser, FiCalendar } from 'react-icons/fi';
 import { GiChiliPepper } from 'react-icons/gi';
 import ATAScoreBadge from '../components/ATAScoreBadge';
@@ -17,10 +17,14 @@ const HallOfFame = () => {
   const fetchLeaderboard = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/leaderboard?timeframe=${timeframe}`);
-      setLeaderboard(data);
+      const { data } = await API.get(`/leaderboard?timeframe=${timeframe}`);
+      setLeaderboard({
+        topReviewers: data.topReviewers || [],
+        mostReviewedMovies: data.mostReviewedMovies || []
+      });
     } catch (err) {
-      console.error('Failed to fetch leaderboard');
+      console.error('Failed to fetch leaderboard:', err);
+      setLeaderboard({ topReviewers: [], mostReviewedMovies: [] });
     } finally {
       setLoading(false);
     }
@@ -81,8 +85,8 @@ const HallOfFame = () => {
                       className="flex items-center gap-6 p-6 rounded-3xl bg-pepper-card border border-white/5 hover:border-pepper-gold/30 hover:-translate-y-1 transition-all group"
                     >
                       <div className="relative">
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-2xl font-black shadow-xl">
-                          {reviewer.userDetails.username[0].toUpperCase()}
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-2xl font-black shadow-xl uppercase">
+                          {reviewer.userDetails?.username?.[0] || '?'}
                         </div>
                         <div className="absolute -top-2 -left-2 w-8 h-8 rounded-lg bg-black border border-white/10 flex items-center justify-center text-xs font-black text-pepper-gold shadow-lg">
                           #{index + 1}
@@ -136,8 +140,8 @@ const HallOfFame = () => {
                     >
                       <div className="relative shrink-0">
                         <img
-                          src={movie.movieDetails.posterUrl}
-                          alt={movie.movieDetails.title}
+                          src={movie.movieDetails?.posterUrl}
+                          alt={movie.movieDetails?.title}
                           className="w-16 h-24 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute -top-2 -left-2 w-8 h-8 rounded-lg bg-black border border-white/10 flex items-center justify-center text-xs font-black text-pepper-hot shadow-lg">
