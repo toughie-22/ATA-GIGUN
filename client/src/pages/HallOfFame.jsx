@@ -85,24 +85,24 @@ const HallOfFame = () => {
                     {/* SPOTLIGHT: #1 Reviewer */}
                     <Link
                       to={`/hall-of-fame/user/${leaderboard.topReviewers[0]._id}`}
-                      className="relative block p-8 rounded-[3rem] bg-gradient-to-br from-pepper-gold/20 via-pepper-card to-pepper-card border-2 border-pepper-gold/40 shadow-2xl shadow-pepper-gold/5 group overflow-hidden"
+                      className="relative block p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-pepper-gold/20 via-pepper-card to-pepper-card border-2 border-pepper-gold/40 shadow-2xl shadow-pepper-gold/5 group overflow-hidden"
                     >
-                      <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
-                        <FiAward size={120} className="text-pepper-gold" />
+                      <div className="absolute top-0 right-0 p-4 md:p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+                        <FiAward size={80} className="md:w-[120px] md:h-[120px]" />
                       </div>
                       
-                      <div className="flex items-center gap-8 relative z-10">
+                      <div className="flex items-center gap-5 md:gap-8 relative z-10">
                         <div className="relative">
-                          <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-pepper-gold to-yellow-600 flex items-center justify-center text-4xl font-black shadow-2xl border-4 border-black">
+                          <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] bg-gradient-to-br from-pepper-gold to-yellow-600 flex items-center justify-center text-2xl md:text-4xl font-black shadow-2xl border-2 md:border-4 border-black">
                             {leaderboard.topReviewers[0].userDetails?.username?.[0] || '?'}
                           </div>
-                          <div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-pepper-gold text-black flex items-center justify-center text-sm font-black shadow-lg">
+                          <div className="absolute -top-2 -left-2 w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-pepper-gold text-black flex items-center justify-center text-xs md:text-sm font-black shadow-lg">
                             #1
                           </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <h3 className="text-3xl font-black group-hover:text-pepper-gold transition-colors uppercase tracking-tight">
+                        <div className="space-y-1">
+                          <h3 className="text-xl md:text-3xl font-black group-hover:text-pepper-gold transition-colors uppercase tracking-tight">
                             {leaderboard.topReviewers[0].userDetails?.username}
                           </h3>
                           <div className="flex items-center gap-3">
@@ -164,26 +164,26 @@ const HallOfFame = () => {
                     {/* SPOTLIGHT: #1 Movie */}
                     <Link
                       to={`/movies/${leaderboard.mostReviewedMovies[0]._id}`}
-                      className="relative block p-8 rounded-[3rem] bg-gradient-to-br from-pepper-hot/20 via-pepper-card to-pepper-card border-2 border-pepper-hot/40 shadow-2xl shadow-pepper-hot/5 group overflow-hidden"
+                      className="relative block p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-pepper-hot/20 via-pepper-card to-pepper-card border-2 border-pepper-hot/40 shadow-2xl shadow-pepper-hot/5 group overflow-hidden"
                     >
                       <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:scale-110 transition-transform duration-700">
-                        <GiChiliPepper size={160} className="text-pepper-hot" />
+                        <GiChiliPepper size={100} className="md:w-[160px] md:h-[160px] text-pepper-hot" />
                       </div>
 
-                      <div className="flex items-center gap-8 relative z-10">
+                      <div className="flex items-center gap-5 md:gap-8 relative z-10">
                         <div className="relative shrink-0">
                           <img
                             src={leaderboard.mostReviewedMovies[0].movieDetails?.posterUrl}
                             alt={leaderboard.mostReviewedMovies[0].movieDetails?.title}
-                            className="w-24 h-36 object-cover rounded-2xl shadow-2xl border-2 border-white/10"
+                            className="w-20 h-32 md:w-24 md:h-36 object-cover rounded-2xl shadow-2xl border-2 border-white/10"
                           />
-                          <div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-pepper-hot text-white flex items-center justify-center text-sm font-black shadow-lg">
+                          <div className="absolute -top-2 -left-2 w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-pepper-hot text-white flex items-center justify-center text-xs md:text-sm font-black shadow-lg">
                             #1
                           </div>
                         </div>
 
-                        <div className="space-y-3">
-                          <h3 className="text-3xl font-black group-hover:text-pepper-hot transition-colors uppercase tracking-tight leading-tight">
+                        <div className="space-y-2">
+                          <h3 className="text-xl md:text-3xl font-black group-hover:text-pepper-hot transition-colors uppercase tracking-tight leading-tight">
                             {leaderboard.mostReviewedMovies[0].movieDetails?.title}
                           </h3>
                           <div className="flex items-center gap-4">
