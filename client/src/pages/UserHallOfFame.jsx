@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api/axios';
 import { FiArrowLeft, FiStar, FiCalendar, FiFilm } from 'react-icons/fi';
 import { GiChiliPepper } from 'react-icons/gi';
 import ATAScoreBadge from '../components/ATAScoreBadge';
@@ -17,10 +17,10 @@ const UserHallOfFame = () => {
   const fetchUserReviews = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/leaderboard/users/${id}/reviews`);
+      const { data } = await API.get(`/leaderboard/users/${id}/reviews`);
       setData(data);
     } catch (err) {
-      console.error('Failed to fetch user reviews');
+      console.error('Failed to fetch user reviews:', err);
     } finally {
       setLoading(false);
     }
@@ -53,14 +53,14 @@ const UserHallOfFame = () => {
             <GiChiliPepper size={200} />
           </div>
 
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-5xl font-black shadow-2xl shrink-0">
-            {user.username[0].toUpperCase()}
+          <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-5xl font-black shadow-2xl shrink-0 uppercase">
+            {user?.username?.[0] || '?'}
           </div>
 
           <div className="text-center md:text-left space-y-4">
             <div>
               <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-                <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">{user.username}</h1>
+                <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">{user?.username || 'Unknown Critic'}</h1>
                 {user.role === 'critic' && (
                   <span className="bg-pepper-gold text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
                     King Critic
@@ -106,7 +106,7 @@ const UserHallOfFame = () => {
                       {review.movie.title}
                     </Link>
                     <div className="flex items-center gap-2 text-xs text-pepper-muted font-bold uppercase tracking-widest">
-                      <FiCalendar /> {new Date(review.createdAt).toLocaleDateString()}
+                      <FiCalendar /> {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : 'Unknown Date'}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -132,7 +132,7 @@ const UserHallOfFame = () => {
 
               <div className="shrink-0 flex flex-col items-center justify-center gap-2 px-6 border-l border-white/5">
                 <p className="text-[10px] font-black text-pepper-muted uppercase tracking-widest">Movie Score</p>
-                <ATAScoreBadge score={review.movie.ataScore} size="lg" />
+                <ATAScoreBadge score={review.movie?.ataScore || 0} size="lg" />
               </div>
             </div>
           ))}
