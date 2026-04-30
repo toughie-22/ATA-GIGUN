@@ -177,7 +177,7 @@ const Navbar = () => {
 
       {/* Mobile/Side menu */}
       {mobileMenuOpen && (
-        <div className="glass border-t border-[var(--border-color)] h-screen animate-fade-in overflow-y-auto fixed inset-0 top-20">
+        <div className="glass border-t border-[var(--border-color)] h-screen animate-slide-down overflow-y-auto fixed inset-0 top-20">
           <div className="section-container py-8 space-y-8 pb-32">
             {/* User Profile Info */}
             {isAuthenticated && (

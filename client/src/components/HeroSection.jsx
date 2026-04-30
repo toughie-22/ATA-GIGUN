@@ -58,7 +58,7 @@ const HeroSection = ({ featuredMovie }) => {
             </div>
 
             <div className="space-y-4">
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up text-[var(--text-main)] transition-colors duration-500 uppercase">
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up text-[var(--text-main)] transition-colors duration-500 uppercase">
                 THE ULTIMATE <br />
                 <span className="text-gradient">NOLLYWOOD</span> <br />
                 HEAT CHECK
