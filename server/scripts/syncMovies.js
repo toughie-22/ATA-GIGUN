@@ -4,7 +4,7 @@ const Movie = require('../models/Movie');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const TMDB_API_KEY = '8cbe31f2035213733d35ab43e07039d2';
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/original';

@@ -106,7 +106,7 @@ const Navbar = () => {
                 placeholder="SEARCH MOVIES..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-48 lg:w-64 pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black tracking-widest text-white focus:outline-none focus:border-pepper-gold/50 focus:w-80 transition-all duration-500"
+                className="w-48 lg:w-64 pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black tracking-widest text-text-main focus:outline-none focus:border-pepper-gold/50 focus:w-80 transition-all duration-500"
               />
             </form>
           </div>
@@ -162,14 +162,14 @@ const Navbar = () => {
             {/* THE ROYAL HAMBURGER */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex items-center gap-3 p-3 sm:p-4 rounded-xl bg-gradient-to-br from-pepper-gold via-pepper-hot-light to-pepper-hot text-white hover:scale-105 transition-all shadow-xl shadow-pepper-hot/20 group"
+              className="flex items-center gap-2 p-2 sm:p-3 rounded-lg bg-gradient-to-br from-pepper-gold via-pepper-hot-light to-pepper-hot text-white hover:scale-105 transition-all shadow-lg shadow-pepper-hot/20 group"
             >
-              <div className="flex flex-col gap-1.5">
-                <span className={`h-0.5 w-6 bg-white transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                <span className={`h-0.5 w-6 bg-white transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-                <span className={`h-0.5 w-4 bg-white transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2 w-6' : ''}`} />
+              <div className="flex flex-col gap-1">
+                <span className={`h-0.5 w-5 bg-white transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
+                <span className={`h-0.5 w-5 bg-white transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                <span className={`h-0.5 w-3 bg-white transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5 w-5' : ''}`} />
               </div>
-              <span className="hidden sm:block text-xs font-black uppercase tracking-[0.2em] mr-1">Menu</span>
+              <span className="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em]">Menu</span>
             </button>
           </div>
         </div>
@@ -199,7 +199,7 @@ const Navbar = () => {
                 placeholder="Search movies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-pepper-card border border-white/10 rounded-2xl text-lg text-white"
+                className="w-full pl-12 pr-4 py-4 bg-pepper-card border border-white/10 rounded-2xl text-lg text-text-main"
               />
             </form>
 

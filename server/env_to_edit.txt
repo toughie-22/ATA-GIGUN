@@ -1,6 +1,0 @@
-MONGO_URI=mongodb+srv://pelumi3015:<db_password>@cluster0.mi6gafw.mongodb.net/atagigun?appName=Cluster0
-JWT_SECRET=pepper_heat_secret_99
-JWT_EXPIRES_IN=7d
-PORT=5000
-NODE_ENV=development
-CLIENT_URL=http://localhost:5173

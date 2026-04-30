@@ -5,6 +5,7 @@ node_modules/
 .env
 .env.local
 .env.production
+env_to_edit.txt
 
 # Build outputs
 dist/
