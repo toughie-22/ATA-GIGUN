@@ -64,7 +64,7 @@ const HeroSection = ({ featuredMovie }) => {
                 HEAT CHECK
               </h1>
               <p className="text-lg sm:text-xl text-pepper-muted max-w-xl leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                Unfiltered reviews, pure fire insights, and real rewards. Drop the hottest takes and climb the ranks—our <span className="text-[var(--text-main)] font-black">Top 3 Critics win big every 2 months.</span> If it’s not hot, it’s not here.
+                Unfiltered reviews, pure fire insights, and real rewards. Drop the hottest takes and climb the ranks—our <span className="text-pepper-hot font-black">Top 3 Critics win big every 2 months.</span> If it’s not hot, it’s not here.
               </p>
             </div>
 
