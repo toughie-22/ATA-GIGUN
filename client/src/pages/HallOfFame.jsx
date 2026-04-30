@@ -62,113 +62,169 @@ const HallOfFame = () => {
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center h-64">
-            <GiChiliPepper className="text-5xl text-pepper-hot animate-bounce" />
+          <div className="flex items-center justify-center h-96">
+            <GiChiliPepper className="text-6xl text-pepper-hot animate-bounce" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Top Reviewers */}
-            <div className="space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-pepper-gold/20 flex items-center justify-center text-pepper-gold">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Top Reviewers Section */}
+            <div className="space-y-10">
+              <div className="flex items-center gap-4 border-b border-white/10 pb-6">
+                <div className="w-12 h-12 rounded-2xl bg-pepper-gold/20 flex items-center justify-center text-pepper-gold shadow-lg shadow-pepper-gold/10">
                   <FiAward size={28} />
                 </div>
-                <h2 className="text-2xl font-black uppercase">Top Reviewers</h2>
+                <div>
+                  <h2 className="text-3xl font-black uppercase tracking-tighter">The Royal Council</h2>
+                  <p className="text-[10px] font-black text-pepper-muted uppercase tracking-widest">Top Critics of the Realm</p>
+                </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {leaderboard.topReviewers.length > 0 ? (
-                  leaderboard.topReviewers.map((reviewer, index) => (
+                  <>
+                    {/* SPOTLIGHT: #1 Reviewer */}
                     <Link
-                      key={reviewer._id}
-                      to={`/hall-of-fame/user/${reviewer._id}`}
-                      className="flex items-center gap-6 p-6 rounded-3xl bg-pepper-card border border-white/5 hover:border-pepper-gold/30 hover:-translate-y-1 transition-all group"
+                      to={`/hall-of-fame/user/${leaderboard.topReviewers[0]._id}`}
+                      className="relative block p-8 rounded-[3rem] bg-gradient-to-br from-pepper-gold/20 via-pepper-card to-pepper-card border-2 border-pepper-gold/40 shadow-2xl shadow-pepper-gold/5 group overflow-hidden"
                     >
-                      <div className="relative">
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-2xl font-black shadow-xl uppercase">
-                          {reviewer.userDetails?.username?.[0] || '?'}
-                        </div>
-                        <div className="absolute -top-2 -left-2 w-8 h-8 rounded-lg bg-black border border-white/10 flex items-center justify-center text-xs font-black text-pepper-gold shadow-lg">
-                          #{index + 1}
-                        </div>
+                      <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+                        <FiAward size={120} className="text-pepper-gold" />
                       </div>
-
-                      <div className="flex-grow">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-bold text-lg group-hover:text-pepper-gold transition-colors">
-                            {reviewer.userDetails.username}
+                      
+                      <div className="flex items-center gap-8 relative z-10">
+                        <div className="relative">
+                          <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-pepper-gold to-yellow-600 flex items-center justify-center text-4xl font-black shadow-2xl border-4 border-black">
+                            {leaderboard.topReviewers[0].userDetails?.username?.[0] || '?'}
+                          </div>
+                          <div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-pepper-gold text-black flex items-center justify-center text-sm font-black shadow-lg">
+                            #1
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <h3 className="text-3xl font-black group-hover:text-pepper-gold transition-colors uppercase tracking-tight">
+                            {leaderboard.topReviewers[0].userDetails?.username}
                           </h3>
-                          {reviewer.userDetails.role === 'critic' && (
-                            <span className="text-[10px] font-black bg-pepper-gold/20 text-pepper-gold px-2 py-0.5 rounded uppercase tracking-tighter">
-                              King
+                          <div className="flex items-center gap-3">
+                            <span className="px-3 py-1 bg-pepper-gold text-black text-[10px] font-black rounded-full uppercase">Current King</span>
+                            <span className="text-xs font-bold text-pepper-muted uppercase tracking-widest">
+                              {leaderboard.topReviewers[0].reviewCount} Reviews
                             </span>
-                          )}
+                          </div>
                         </div>
-                        <p className="text-xs text-pepper-muted font-bold uppercase tracking-widest">
-                          {reviewer.reviewCount} Reviews Posted
-                        </p>
-                      </div>
-
-                      <div className="text-right">
-                        <p className="text-[10px] font-black text-pepper-gold uppercase mb-1">Royal Followers</p>
-                        <p className="text-xl font-black">{reviewer.userDetails.followers?.length || 0}</p>
                       </div>
                     </Link>
-                  ))
+
+                    {/* The Rest of Top 10 */}
+                    <div className="grid grid-cols-1 gap-4 pt-4">
+                      {leaderboard.topReviewers.slice(1).map((reviewer, index) => (
+                        <Link
+                          key={reviewer._id}
+                          to={`/hall-of-fame/user/${reviewer._id}`}
+                          className="flex items-center gap-6 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-white/20 transition-all group"
+                        >
+                          <div className="w-8 text-center font-black text-pepper-muted group-hover:text-white transition-colors">
+                            {index + 2}
+                          </div>
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pepper-green to-pepper-gold/50 flex items-center justify-center text-lg font-black shrink-0 uppercase">
+                            {reviewer.userDetails?.username?.[0] || '?'}
+                          </div>
+                          <div className="flex-grow">
+                            <h4 className="font-bold group-hover:text-pepper-gold transition-colors">{reviewer.userDetails?.username}</h4>
+                            <p className="text-[10px] font-bold text-pepper-muted uppercase tracking-widest">{reviewer.reviewCount} Reviews</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-[10px] font-black text-pepper-gold uppercase">{reviewer.userDetails?.followers?.length || 0} Fans</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
                 ) : (
-                  <p className="text-pepper-muted italic">No reviewers found for this period.</p>
+                  <p className="text-pepper-muted italic">The Royal Council is empty for now...</p>
                 )}
               </div>
             </div>
 
-            {/* Most Reviewed Movies */}
-            <div className="space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-pepper-hot/20 flex items-center justify-center text-pepper-hot">
+            {/* Trending Discussions Section */}
+            <div className="space-y-10">
+              <div className="flex items-center gap-4 border-b border-white/10 pb-6">
+                <div className="w-12 h-12 rounded-2xl bg-pepper-hot/20 flex items-center justify-center text-pepper-hot shadow-lg shadow-pepper-hot/10">
                   <FiTrendingUp size={28} />
                 </div>
-                <h2 className="text-2xl font-black uppercase">Trending Discussions</h2>
+                <div>
+                  <h2 className="text-3xl font-black uppercase tracking-tighter">The Red Carpet</h2>
+                  <p className="text-[10px] font-black text-pepper-muted uppercase tracking-widest">Most Talked About Films</p>
+                </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {leaderboard.mostReviewedMovies.length > 0 ? (
-                  leaderboard.mostReviewedMovies.map((movie, index) => (
+                  <>
+                    {/* SPOTLIGHT: #1 Movie */}
                     <Link
-                      key={movie._id}
-                      to={`/movies/${movie._id}`}
-                      className="flex items-center gap-6 p-4 rounded-3xl bg-pepper-card border border-white/5 hover:border-pepper-hot/30 hover:-translate-y-1 transition-all group"
+                      to={`/movies/${leaderboard.mostReviewedMovies[0]._id}`}
+                      className="relative block p-8 rounded-[3rem] bg-gradient-to-br from-pepper-hot/20 via-pepper-card to-pepper-card border-2 border-pepper-hot/40 shadow-2xl shadow-pepper-hot/5 group overflow-hidden"
                     >
-                      <div className="relative shrink-0">
-                        <img
-                          src={movie.movieDetails?.posterUrl}
-                          alt={movie.movieDetails?.title}
-                          className="w-16 h-24 object-cover rounded-xl shadow-lg"
-                        />
-                        <div className="absolute -top-2 -left-2 w-8 h-8 rounded-lg bg-black border border-white/10 flex items-center justify-center text-xs font-black text-pepper-hot shadow-lg">
-                          #{index + 1}
-                        </div>
+                      <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:scale-110 transition-transform duration-700">
+                        <GiChiliPepper size={160} className="text-pepper-hot" />
                       </div>
 
-                      <div className="flex-grow">
-                        <h3 className="font-bold text-lg group-hover:text-pepper-hot transition-colors line-clamp-1">
-                          {movie.movieDetails.title}
-                        </h3>
-                        <div className="flex items-center gap-3 mt-1">
-                          <span className="text-xs text-pepper-muted">{movie.movieDetails.year}</span>
-                          <span className="w-1 h-1 rounded-full bg-white/20" />
-                          <span className="text-[10px] font-black text-pepper-hot uppercase tracking-widest">
-                            {movie.reviewCount} Active Reviews
-                          </span>
+                      <div className="flex items-center gap-8 relative z-10">
+                        <div className="relative shrink-0">
+                          <img
+                            src={leaderboard.mostReviewedMovies[0].movieDetails?.posterUrl}
+                            alt={leaderboard.mostReviewedMovies[0].movieDetails?.title}
+                            className="w-24 h-36 object-cover rounded-2xl shadow-2xl border-2 border-white/10"
+                          />
+                          <div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-pepper-hot text-white flex items-center justify-center text-sm font-black shadow-lg">
+                            #1
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="shrink-0">
-                        <ATAScoreBadge score={movie.movieDetails.ataScore} size="sm" />
+                        <div className="space-y-3">
+                          <h3 className="text-3xl font-black group-hover:text-pepper-hot transition-colors uppercase tracking-tight leading-tight">
+                            {leaderboard.mostReviewedMovies[0].movieDetails?.title}
+                          </h3>
+                          <div className="flex items-center gap-4">
+                            <ATAScoreBadge score={leaderboard.mostReviewedMovies[0].movieDetails?.ataScore || 0} size="md" />
+                            <span className="text-xs font-bold text-pepper-muted uppercase tracking-widest">
+                              {leaderboard.mostReviewedMovies[0].reviewCount} Active Reviews
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </Link>
-                  ))
+
+                    {/* The Rest of Top 10 */}
+                    <div className="grid grid-cols-1 gap-4 pt-4">
+                      {leaderboard.mostReviewedMovies.slice(1).map((movie, index) => (
+                        <Link
+                          key={movie._id}
+                          to={`/movies/${movie._id}`}
+                          className="flex items-center gap-6 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/20 transition-all group"
+                        >
+                          <div className="w-8 text-center font-black text-pepper-muted group-hover:text-white transition-colors">
+                            {index + 2}
+                          </div>
+                          <img
+                            src={movie.movieDetails?.posterUrl}
+                            alt={movie.movieDetails?.title}
+                            className="w-12 h-16 object-cover rounded-lg shadow-lg shrink-0"
+                          />
+                          <div className="flex-grow">
+                            <h4 className="font-bold group-hover:text-pepper-hot transition-colors line-clamp-1">{movie.movieDetails?.title}</h4>
+                            <p className="text-[10px] font-bold text-pepper-muted uppercase tracking-widest">{movie.reviewCount} Reviews</p>
+                          </div>
+                          <div className="shrink-0">
+                            <ATAScoreBadge score={movie.movieDetails?.ataScore || 0} size="sm" />
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
                 ) : (
-                  <p className="text-pepper-muted italic">No movies found for this period.</p>
+                  <p className="text-pepper-muted italic">The Red Carpet is empty for now...</p>
                 )}
               </div>
             </div>
