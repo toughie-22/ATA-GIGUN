@@ -58,13 +58,13 @@ const HeroSection = ({ featuredMovie }) => {
             </div>
 
             <div className="space-y-4">
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up text-[var(--text-main)] transition-colors duration-500">
-                BRING THE <br />
-                <span className="text-gradient">HEAT TO</span> <br />
-                NOLLYWOOD
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up text-[var(--text-main)] transition-colors duration-500 uppercase">
+                THE ULTIMATE <br />
+                <span className="text-gradient">NOLLYWOOD</span> <br />
+                HEAT CHECK
               </h1>
               <p className="text-lg sm:text-xl text-pepper-muted max-w-xl leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                Discover, rate, and review the best of Nigerian cinema. From blockbusters to hidden gems — experience the movie score system that matters.
+                Unfiltered reviews, authentic ratings, and pure fire insights into the best of Nigerian cinema. If it’s not hot, it’s not here.
               </p>
             </div>
 
