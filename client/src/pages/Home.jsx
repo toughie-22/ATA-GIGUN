@@ -52,10 +52,10 @@ const Home = () => {
     <div className="min-h-screen">
       <HeroSection featuredMovie={featured} />
 
-      <div className="section-container pb-20 space-y-12">
+      <div className="section-container pb-12 sm:pb-20 space-y-6 sm:space-y-12">
         {/* Weekly Trending - The Limelight */}
         {trendingWeek.length > 0 && (
-          <div className="pt-12">
+          <div className="pt-6 sm:pt-10">
             <MovieSection
               title="Top Rated This Week"
               emoji="🔥"

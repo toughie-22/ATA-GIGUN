@@ -16,8 +16,8 @@ const MovieSection = ({ title, movies, linkTo, emoji }) => {
   if (!movies || movies.length === 0) return null;
 
   return (
-    <section className="py-12 border-b border-white/5 last:border-0">
-      <div className="flex items-end justify-between mb-8">
+    <section className="py-6 sm:py-10 border-b border-white/5 last:border-0">
+      <div className="flex items-end justify-between mb-4 sm:mb-8">
         <div className="space-y-1 group">
           <h2 className="text-2xl sm:text-3xl font-black flex items-center gap-3 transition-all duration-300 group-hover:translate-x-2">
             {emoji && <span className="text-3xl drop-shadow-lg">{emoji}</span>}
@@ -59,7 +59,7 @@ const MovieSection = ({ title, movies, linkTo, emoji }) => {
         className="flex gap-6 overflow-x-auto no-scrollbar pb-6 -mx-4 px-4 sm:mx-0 sm:px-0"
       >
         {movies.map((movie, index) => (
-          <div key={movie._id} className="flex-none w-[200px] sm:w-[240px] md:w-[260px]">
+          <div key={movie._id} className="flex-none w-[160px] sm:w-[240px] md:w-[260px]">
             <MovieCard movie={movie} rank={title.includes('Rated') || title.includes('Best') || title.includes('Hits') ? index + 1 : null} />
           </div>
         ))}

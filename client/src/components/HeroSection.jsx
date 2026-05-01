@@ -6,7 +6,7 @@ import { FiArrowRight, FiPlay } from 'react-icons/fi';
 const HeroSection = ({ featuredMovie }) => {
   const [imgError, setImgError] = useState(false);
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[var(--bg-main)] transition-colors duration-500">
+    <section className="relative flex items-center pt-16 sm:pt-20 overflow-hidden bg-[var(--bg-main)] transition-colors duration-500 min-h-[85vh] sm:min-h-screen">
       {/* Background with advanced gradient layering */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         {featuredMovie?.posterUrl && !imgError ? (
@@ -26,17 +26,17 @@ const HeroSection = ({ featuredMovie }) => {
         )}
       </div>
 
-      {/* Animated Background Elements */}
+      {/* Animated Background Elements — fewer on mobile */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <div
             key={i}
             className="absolute animate-float text-pepper-hot/5"
             style={{
-              left: `${10 + i * 12}%`,
-              top: `${15 + (i % 4) * 20}%`,
+              left: `${10 + i * 18}%`,
+              top: `${15 + (i % 3) * 25}%`,
               animationDelay: `${i * 0.7}s`,
-              fontSize: `${2 + (i % 3) * 1.5}rem`,
+              fontSize: `${1.5 + (i % 3)}rem`,
             }}
           >
             <GiChiliPepper />
@@ -45,37 +45,30 @@ const HeroSection = ({ featuredMovie }) => {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 section-container py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      <div className="relative z-10 section-container py-10 sm:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
           {/* Text Content */}
-          <div className="lg:col-span-7 space-y-8">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-pepper-card/50 border border-white/10 dark:border-white/5 animate-fade-in shadow-xl backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pepper-hot opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-pepper-hot"></span>
-              </span>
-              <span className="text-xs font-bold tracking-widest uppercase text-pepper-hot">The Home of Nollywood</span>
-            </div>
+          <div className="lg:col-span-7 space-y-5 sm:space-y-8">
 
-            <div className="space-y-4">
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up text-[var(--text-main)] transition-colors duration-500 uppercase">
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-4xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up text-[var(--text-main)] transition-colors duration-500 uppercase">
                 THE ULTIMATE <br />
                 <span className="text-gradient">NOLLYWOOD</span> <br />
                 HEAT CHECK
               </h1>
-              <p className="text-lg sm:text-xl text-pepper-muted max-w-xl leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                Unfiltered reviews, pure fire insights, and real rewards. Drop the hottest takes and climb the ranks—our <span className="text-pepper-hot font-black">Top 3 Critics win big every 2 months.</span> If it’s not hot, it’s not here.
+              <p className="text-sm sm:text-xl text-pepper-muted max-w-xl leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                Unfiltered reviews, pure fire insights, and real rewards. Drop the hottest takes—our <span className="text-pepper-hot font-black">Top 3 Critics win big every 2 months.</span>
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-5 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-              <Link to="/discover" className="btn-primary flex items-center gap-3 text-lg">
+            <div className="flex flex-wrap gap-3 sm:gap-5 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+              <Link to="/discover" className="btn-primary flex items-center gap-2 text-sm sm:text-lg px-5 py-3 sm:px-8 sm:py-4">
                 Explore Movies <FiArrowRight />
               </Link>
               {featuredMovie && (
                 <Link
                   to={`/movies/${featuredMovie._id}`}
-                  className="flex items-center gap-3 px-8 py-3 rounded-lg bg-pepper-card/50 border border-pepper-gold/20 hover:bg-pepper-gold/10 hover:border-pepper-gold/40 transition-all group backdrop-blur-sm"
+                  className="flex items-center gap-2 px-5 py-3 sm:px-8 sm:py-4 rounded-lg bg-pepper-card/50 border border-pepper-gold/20 hover:bg-pepper-gold/10 hover:border-pepper-gold/40 transition-all group backdrop-blur-sm text-sm sm:text-base"
                 >
                   <FiPlay className="text-pepper-gold group-hover:scale-110 transition-transform" />
                   <span className="font-semibold">Watch Trailer</span>
@@ -83,26 +76,26 @@ const HeroSection = ({ featuredMovie }) => {
               )}
             </div>
 
-            {/* Platform Stats */}
-            <div className="flex gap-12 pt-8 animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            {/* Platform Stats — more compact on mobile */}
+            <div className="flex gap-6 sm:gap-12 pt-2 sm:pt-8 animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <div>
-                <p className="text-3xl font-black">23+</p>
-                <p className="text-xs font-bold tracking-widest uppercase text-pepper-muted">Classics</p>
+                <p className="text-2xl sm:text-3xl font-black">23+</p>
+                <p className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-pepper-muted">Classics</p>
               </div>
-              <div className="w-px h-10 bg-pepper-muted/20 self-center" />
+              <div className="w-px h-8 sm:h-10 bg-pepper-muted/20 self-center" />
               <div>
-                <p className="text-3xl font-black">🌶️</p>
-                <p className="text-xs font-bold tracking-widest uppercase text-pepper-muted">Certified</p>
+                <p className="text-2xl sm:text-3xl font-black">🌶️</p>
+                <p className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-pepper-muted">Certified</p>
               </div>
-              <div className="w-px h-10 bg-pepper-muted/20 self-center" />
+              <div className="w-px h-8 sm:h-10 bg-pepper-muted/20 self-center" />
               <div>
-                <p className="text-3xl font-black uppercase">ATA</p>
-                <p className="text-xs font-bold tracking-widest uppercase text-pepper-muted">Score System</p>
+                <p className="text-2xl sm:text-3xl font-black uppercase">ATA</p>
+                <p className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-pepper-muted">Score System</p>
               </div>
             </div>
           </div>
 
-          {/* Featured Poster Card (Desktop) */}
+          {/* Featured Poster Card (Desktop only) */}
           {featuredMovie && (
             <div className="hidden lg:block lg:col-span-5 animate-slide-up" style={{ animationDelay: '0.3s' }}>
               <div className="relative group perspective-1000">
@@ -128,7 +121,6 @@ const HeroSection = ({ featuredMovie }) => {
                     <h3 className="text-3xl font-bold text-white leading-none">{featuredMovie.title}</h3>
                   </div>
                 </div>
-                {/* Decorative Elements */}
                 <div className="absolute -top-6 -right-6 w-32 h-32 bg-pepper-gold/10 blur-3xl rounded-full" />
                 <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-pepper-hot/10 blur-3xl rounded-full" />
               </div>
