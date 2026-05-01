@@ -26,9 +26,9 @@ const registerValidation = [
 
 const loginValidation = [
   body('email')
-    .isEmail()
-    .normalizeEmail()
-    .withMessage('Please provide a valid email'),
+    .trim()
+    .notEmpty()
+    .withMessage('Please provide your email or username'),
   body('password')
     .notEmpty()
     .withMessage('Password is required'),
@@ -89,16 +89,25 @@ const login = async (req, res) => {
       return res.status(400).json({ message: errors.array()[0].msg });
     }
 
-    const { email, password } = req.body;
+    const { email: identifier, password } = req.body;
 
-    const user = await User.findOne({ email });
+    // Support both email and username login
+    const user = await User.findOne({
+      $or: [
+        { email: identifier.toLowerCase() },
+        { username: identifier }
+      ]
+    });
+
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      console.log(`Login failed: Identity not found for ${identifier}`);
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      console.log(`Login failed: Wrong password for ${identifier}`);
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     const token = generateToken(user._id, user.role);

@@ -27,14 +27,22 @@ const UserHallOfFame = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <GiChiliPepper className="text-5xl text-pepper-hot animate-bounce" />
+    <div className="min-h-screen flex items-center justify-center pt-24">
+      <div className="flex flex-col items-center gap-4">
+        <div className="spinner" />
+        <p className="text-pepper-muted text-sm uppercase tracking-widest font-bold">Summoning Critic...</p>
+      </div>
     </div>
   );
 
   if (!data) return (
-    <div className="min-h-screen flex items-center justify-center text-pepper-muted">
-      User not found
+    <div className="min-h-screen flex items-center justify-center text-pepper-muted pt-24">
+      <div className="text-center">
+        <GiChiliPepper className="text-5xl text-pepper-muted/20 mx-auto mb-4" />
+        <h2 className="text-xl font-bold mb-2 uppercase tracking-tighter">Critic Not Found</h2>
+        <p className="text-sm">This critic hasn't joined the Royal Council yet.</p>
+        <Link to="/hall-of-fame" className="btn-primary mt-6 inline-flex">Back to Hall of Fame</Link>
+      </div>
     </div>
   );
 
@@ -43,24 +51,24 @@ const UserHallOfFame = () => {
   return (
     <div className="min-h-screen pt-24 pb-20">
       <div className="section-container">
-        <Link to="/hall-of-fame" className="inline-flex items-center gap-2 text-pepper-muted hover:text-white transition-colors mb-8 group">
+        <Link to="/hall-of-fame" className="inline-flex items-center gap-2 text-pepper-muted hover:text-white transition-colors mb-8 group min-h-[unset]">
           <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" /> Back to Hall of Fame
         </Link>
 
         {/* User Header */}
         <div className="flex flex-col md:flex-row items-center gap-8 mb-16 p-8 rounded-[3rem] bg-gradient-to-br from-pepper-card to-black border border-white/5 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-            <GiChiliPepper size={200} />
+            <GiChiliPepper size={200} className="text-pepper-red" />
           </div>
 
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-5xl font-black shadow-2xl shrink-0 uppercase">
+          <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] bg-gradient-to-br from-pepper-red to-pepper-gold flex items-center justify-center text-5xl font-black shadow-2xl shrink-0 uppercase text-white">
             {user?.username?.[0] || '?'}
           </div>
 
           <div className="text-center md:text-left space-y-4">
             <div>
               <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-                <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">{user?.username || 'Unknown Critic'}</h1>
+                <h1 className="font-black tracking-tighter uppercase" style={{ fontSize: 'var(--text-h1)' }}>{user?.username || 'Unknown Critic'}</h1>
                 {user.role === 'critic' && (
                   <span className="bg-pepper-gold text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
                     King Critic

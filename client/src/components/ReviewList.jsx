@@ -113,7 +113,7 @@ const ReviewList = ({ reviews: initialReviews, onReviewDeleted }) => {
                     onClick={() => handleFollow(review.user._id)}
                     className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase transition-all duration-300 ${
                       isFollowing 
-                        ? 'bg-pepper-green/20 text-pepper-green border border-pepper-green/30' 
+                        ? 'bg-pepper-red/10 text-pepper-red border border-pepper-red/20' 
                         : 'bg-pepper-gold text-white shadow-lg shadow-pepper-gold/20 hover:scale-105'
                     }`}
                   >

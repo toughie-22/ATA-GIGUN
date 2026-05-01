@@ -8,7 +8,7 @@ const MovieSection = ({ title, movies, linkTo, emoji }) => {
 
   const scroll = (dir) => {
     if (scrollRef.current) {
-      const amount = dir === 'left' ? -400 : 400;
+      const amount = dir === 'left' ? -320 : 320;
       scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
     }
   };
@@ -17,50 +17,73 @@ const MovieSection = ({ title, movies, linkTo, emoji }) => {
 
   return (
     <section className="py-6 sm:py-10 border-b border-white/5 last:border-0">
-      <div className="flex items-end justify-between mb-4 sm:mb-8">
-        <div className="space-y-1 group">
-          <h2 className="text-2xl sm:text-3xl font-black flex items-center gap-3 transition-all duration-300 group-hover:translate-x-2">
-            {emoji && <span className="text-3xl drop-shadow-lg">{emoji}</span>}
-            <span className="bg-gradient-to-r from-[var(--text-main)] to-pepper-gold bg-clip-text text-transparent group-hover:to-pepper-hot transition-all duration-500">
+      {/* Section header */}
+      <div className="flex items-end justify-between mb-4 sm:mb-8 gap-4">
+        <div className="space-y-1 group min-w-0">
+          <h2
+            className="font-black flex items-center gap-2 sm:gap-3 transition-all duration-300 group-hover:translate-x-1"
+            style={{ fontSize: 'var(--text-h2)' }}
+          >
+            {emoji && <span className="shrink-0">{emoji}</span>}
+            <span className="bg-gradient-to-r from-[var(--text-main)] to-pepper-gold bg-clip-text text-transparent group-hover:to-pepper-red transition-all duration-500 truncate">
               {title}
             </span>
           </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-pepper-hot to-pepper-gold rounded-full shadow-[0_0_10px_rgba(255,65,54,0.4)]" />
+          <div className="h-0.5 w-16 bg-gradient-to-r from-pepper-red to-pepper-gold rounded-full" />
         </div>
-        
-        <div className="flex items-center gap-4">
+
+        <div className="flex items-center gap-3 shrink-0">
           {linkTo && (
             <Link
               to={linkTo}
-              className="flex items-center gap-2 text-sm font-bold text-pepper-muted hover:text-white transition-colors group"
+              className="flex items-center gap-1.5 text-sm font-bold text-pepper-muted hover:text-white transition-colors group/link"
             >
-              Explore All <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+              <span className="hidden sm:inline">Explore All</span>
+              <FiArrowRight className="group-hover/link:translate-x-1 transition-transform" />
             </Link>
           )}
+          {/* Scroll buttons — desktop only */}
           <div className="hidden sm:flex gap-2">
             <button
               onClick={() => scroll('left')}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-pepper-muted hover:text-white hover:bg-white/10 transition-all"
+              aria-label="Scroll left"
+              className="p-2.5 rounded-full bg-white/5 border border-white/10 text-pepper-muted hover:text-white hover:bg-white/10 transition-all"
             >
-              <FiChevronLeft size={20} />
+              <FiChevronLeft size={18} />
             </button>
             <button
               onClick={() => scroll('right')}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-pepper-muted hover:text-white hover:bg-white/10 transition-all"
+              aria-label="Scroll right"
+              className="p-2.5 rounded-full bg-white/5 border border-white/10 text-pepper-muted hover:text-white hover:bg-white/10 transition-all"
             >
-              <FiChevronRight size={20} />
+              <FiChevronRight size={18} />
             </button>
           </div>
         </div>
       </div>
 
+      {/* Horizontal scroll carousel */}
       <div
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto no-scrollbar pb-6 -mx-4 px-4 sm:mx-0 sm:px-0"
+        className="flex gap-3 sm:gap-5 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
+        role="list"
+        aria-label={title}
       >
         {movies.map((movie, index) => (
-          <div key={movie._id} className="flex-none w-[160px] sm:w-[240px] md:w-[260px]">
-            <MovieCard movie={movie} rank={title.includes('Rated') || title.includes('Best') || title.includes('Hits') ? index + 1 : null} />
+          <div
+            key={movie._id}
+            role="listitem"
+            /* Responsive card widths for the horizontal carousel */
+            className="flex-none w-[130px] xs:w-[150px] sm:w-[185px] md:w-[210px] lg:w-[220px]"
+          >
+            <MovieCard
+              movie={movie}
+              rank={
+                title.includes('Rated') || title.includes('Best') || title.includes('Hits')
+                  ? index + 1
+                  : null
+              }
+            />
           </div>
         ))}
       </div>

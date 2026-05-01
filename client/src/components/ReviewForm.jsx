@@ -25,7 +25,7 @@ const ReviewForm = ({ movieId, onReviewAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (rating === 0) {
-      toast.error('Please select a rating');
+      toast.error('Pick a pepper rating first — how many chillies does this film deserve? 🌶️');
       return;
     }
     setLoading(true);
@@ -48,7 +48,7 @@ const ReviewForm = ({ movieId, onReviewAdded }) => {
 
       {/* Pepper rating */}
       <div className="mb-8">
-        <label className="block text-lg text-pepper-muted mb-4">Your Rating</label>
+        <label className="block text-sm font-semibold text-pepper-muted mb-4 uppercase tracking-widest">Your Rating</label>
         <div className="flex flex-wrap gap-2">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
             <button
@@ -76,14 +76,14 @@ const ReviewForm = ({ movieId, onReviewAdded }) => {
 
       {/* Comment */}
       <div className="mb-8">
-        <label className="block text-lg text-pepper-muted mb-4">Your Review (optional)</label>
+        <label className="block text-sm font-semibold text-pepper-muted mb-4 uppercase tracking-widest">Your Review (optional)</label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           maxLength={1000}
-          rows={6}
-          placeholder="What did you think of this movie?"
-          className="w-full px-6 py-4 bg-pepper-surface border border-[var(--border-color)] rounded-xl text-lg focus:outline-none focus:border-pepper-gold/50 focus:ring-1 focus:ring-pepper-gold/30 resize-none transition-all"
+          rows={5}
+          placeholder="What did you think of this movie? Be as spicy as you like 🌶️"
+          className="w-full px-4 py-3 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl text-[var(--text-main)] placeholder:text-pepper-muted text-sm focus:outline-none focus:border-pepper-gold/50 focus:ring-1 focus:ring-pepper-gold/30 resize-none transition-all min-h-[120px]"
         />
         <div className="text-right text-sm text-pepper-muted mt-2">
           {comment.length}/1000
@@ -94,9 +94,9 @@ const ReviewForm = ({ movieId, onReviewAdded }) => {
       <button
         type="submit"
         disabled={loading || rating === 0}
-        className="w-full py-4 rounded-xl bg-gradient-to-r from-pepper-green to-pepper-green-light text-white font-bold text-xl hover:shadow-lg hover:shadow-pepper-green/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="btn-primary w-full py-3 text-sm font-bold disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? 'Submitting...' : 'Submit Review 🌶️'}
+        {loading ? 'Submitting...' : 'Drop Your Hot Take 🌶️'}
       </button>
     </form>
   );

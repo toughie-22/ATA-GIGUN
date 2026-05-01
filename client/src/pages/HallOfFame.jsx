@@ -36,7 +36,7 @@ const HallOfFame = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-6xl font-black text-gradient uppercase tracking-tighter">
+            <h1 className="font-black text-gradient uppercase tracking-tighter" style={{ fontSize: 'var(--text-hero)' }}>
               Hall of Fame
             </h1>
             <p className="text-pepper-muted font-bold tracking-widest text-xs uppercase">
@@ -49,9 +49,9 @@ const HallOfFame = () => {
               <button
                 key={t}
                 onClick={() => setTimeframe(t)}
-                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                className={`px-4 sm:px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
                   timeframe === t 
-                    ? 'bg-gradient-to-r from-pepper-gold to-pepper-hot text-white shadow-lg' 
+                    ? 'bg-gradient-to-r from-pepper-red to-pepper-gold text-white shadow-lg shadow-pepper-red/20' 
                     : 'text-pepper-muted hover:text-white'
                 }`}
               >
@@ -126,7 +126,7 @@ const HallOfFame = () => {
                           <div className="w-8 text-center font-black text-pepper-muted group-hover:text-white transition-colors">
                             {index + 2}
                           </div>
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pepper-green to-pepper-gold/50 flex items-center justify-center text-lg font-black shrink-0 uppercase">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pepper-red to-pepper-gold flex items-center justify-center text-lg font-black shrink-0 uppercase text-white">
                             {reviewer.userDetails?.username?.[0] || '?'}
                           </div>
                           <div className="flex-grow">

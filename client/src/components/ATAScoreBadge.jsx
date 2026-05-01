@@ -1,9 +1,9 @@
 const ATAScoreBadge = ({ score, size = 'md' }) => {
   const getScoreColor = () => {
-    if (score >= 85) return { bg: 'from-green-500 to-emerald-600', text: 'text-green-400', ring: 'ring-green-500/30' };
-    if (score >= 70) return { bg: 'from-pepper-gold to-yellow-500', text: 'text-pepper-gold', ring: 'ring-pepper-gold/30' };
+    if (score >= 85) return { bg: 'from-pepper-green-light to-pepper-green', text: 'text-pepper-green-light', ring: 'ring-pepper-green/30' };
+    if (score >= 70) return { bg: 'from-pepper-gold-light to-pepper-gold', text: 'text-pepper-gold-light', ring: 'ring-pepper-gold/30' };
     if (score >= 50) return { bg: 'from-orange-500 to-amber-500', text: 'text-orange-400', ring: 'ring-orange-500/30' };
-    return { bg: 'from-red-500 to-rose-600', text: 'text-red-400', ring: 'ring-red-500/30' };
+    return { bg: 'from-pepper-red-light to-pepper-red', text: 'text-pepper-red-light', ring: 'ring-pepper-red/30' };
   };
 
   const getLabel = () => {

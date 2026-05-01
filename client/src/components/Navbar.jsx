@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { getNotifications, markNotificationsRead } from '../api/userApi';
@@ -10,6 +10,7 @@ const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -18,6 +19,7 @@ const Navbar = () => {
   const profileRef = useRef(null);
   const notifRef = useRef(null);
 
+  // Close dropdowns on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) setProfileOpen(false);
@@ -27,10 +29,15 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchNotifications();
-      const interval = setInterval(fetchNotifications, 60000); // Poll every minute
+      const interval = setInterval(fetchNotifications, 60000);
       return () => clearInterval(interval);
     }
   }, [isAuthenticated]);
@@ -73,6 +80,24 @@ const Navbar = () => {
     navigate('/');
   };
 
+  /** Returns true if the current path matches the given route */
+  const isActive = (path) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
+
+  const navLinkClass = (path) =>
+    `text-sm font-bold uppercase tracking-widest transition-colors relative pb-1 ${
+      isActive(path)
+        ? 'text-pepper-gold nav-link-active'
+        : 'text-pepper-muted hover:text-pepper-gold'
+    }`;
+
+  const mobileLinkClass = (path) =>
+    `flex items-center gap-4 text-3xl font-black uppercase tracking-tighter transition-colors ${
+      isActive(path) ? 'text-pepper-gold' : 'hover:text-pepper-gold'
+    }`;
+
   const getNotifMessage = (n) => {
     switch (n.type) {
       case 'FOLLOW': return 'started following you';
@@ -83,91 +108,152 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <div className="w-full px-6 sm:px-10 lg:px-12">
-        <div className="flex items-center justify-between h-20 gap-8">
-          {/* Logo - Start from the edge */}
-          <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <GiChiliPepper className="text-3xl text-pepper-hot group-hover:rotate-12 transition-transform duration-300" />
-            <span className="text-2xl font-black tracking-tighter text-gradient uppercase">ATA GiGUN</span>
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 glass"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div className="w-full px-4 sm:px-6 lg:px-12">
+        <div className="flex items-center justify-between h-20 gap-4 sm:gap-8">
+
+          {/* ── Logo ── */}
+          <Link to="/" className="flex items-center gap-2 group shrink-0" aria-label="ATA GiGUN home">
+            <GiChiliPepper className="text-3xl text-pepper-red group-hover:rotate-12 transition-transform duration-300 shrink-0" />
+            <span className="text-xl sm:text-2xl font-black tracking-tighter text-gradient uppercase leading-none">
+              ATA GiGUN
+            </span>
           </Link>
 
-          {/* Center Nav - Primary Links */}
-          <div className="hidden lg:flex items-center justify-center flex-grow gap-12">
-            <Link to="/" className="text-sm font-bold uppercase tracking-widest text-pepper-muted hover:text-pepper-gold transition-colors">Home</Link>
-            <Link to="/discover" className="text-sm font-bold uppercase tracking-widest text-pepper-muted hover:text-pepper-gold transition-colors">Discover</Link>
-            <Link to="/hall-of-fame" className="text-sm font-black uppercase tracking-widest text-pepper-gold hover:text-white transition-all hover:scale-110">Hall of Fame</Link>
-            
-            {/* Search (Desktop) - Integrated into center flow */}
-            <form onSubmit={handleSearch} className="hidden md:relative md:block group ml-4">
-              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-pepper-muted group-focus-within:text-pepper-gold transition-colors" />
+          {/* ── Desktop Nav Links ── */}
+          <div className="hidden lg:flex items-center justify-center flex-grow gap-10">
+            <Link to="/" className={navLinkClass('/')}>Home</Link>
+            <Link to="/discover" className={navLinkClass('/discover')}>Browse</Link>
+            <Link to="/hall-of-fame" className={navLinkClass('/hall-of-fame')}>Top Rated</Link>
+
+            {/* Desktop Search */}
+            <form onSubmit={handleSearch} className="relative group ml-2">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-pepper-muted group-focus-within:text-pepper-gold transition-colors z-10" />
               <input
                 type="text"
-                placeholder="SEARCH MOVIES..."
+                placeholder="Search movies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-48 lg:w-64 pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black tracking-widest text-text-main focus:outline-none focus:border-pepper-gold/50 focus:w-80 transition-all duration-500"
+                aria-label="Search movies"
+                className="w-44 lg:w-60 pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-text-main focus:outline-none focus:border-pepper-gold/50 focus:w-72 transition-all duration-400 placeholder:text-pepper-muted"
               />
             </form>
           </div>
 
-          {/* Right Side - Actions & Hamburger (Last edge) */}
-          <div className="flex items-center gap-6 sm:gap-8 shrink-0">
-            {/* Notification Bell & Profile (Desktop) */}
+          {/* ── Right Side: Auth + Theme Toggle + Hamburger ── */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+
+            {/* Notification Bell + Profile Avatar (desktop authenticated) */}
             {isAuthenticated ? (
-              <div className="hidden md:flex items-center gap-6">
+              <div className="hidden md:flex items-center gap-3">
+                {/* Bell */}
                 <div className="relative" ref={notifRef}>
                   <button
                     onClick={handleMarkRead}
-                    className="p-3 rounded-xl bg-white/5 border border-white/10 text-pepper-muted hover:text-pepper-gold hover:border-pepper-gold/30 transition-all relative"
+                    aria-label="Notifications"
+                    aria-expanded={notifOpen}
+                    className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-pepper-muted hover:text-pepper-gold hover:border-pepper-gold/30 transition-all relative"
                   >
-                    <FiBell size={20} />
+                    <FiBell size={18} />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-pepper-hot text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-pepper-dark animate-pulse">
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-pepper-red text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-pepper-dark animate-pulse">
                         {unreadCount}
                       </span>
                     )}
                   </button>
-                  {/* ... existing notification dropdown ... */}
+
+                  {/* Notification dropdown */}
+                  {notifOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl bg-pepper-card border border-white/10 shadow-2xl z-50 overflow-hidden animate-slide-down">
+                      <div className="p-4 border-b border-white/10">
+                        <p className="text-sm font-bold">Notifications</p>
+                      </div>
+                      <div className="max-h-80 overflow-y-auto">
+                        {notifications.length === 0 ? (
+                          <p className="p-4 text-sm text-pepper-muted text-center">No notifications yet</p>
+                        ) : (
+                          notifications.slice(0, 10).map(n => (
+                            <div
+                              key={n._id}
+                              className={`p-4 border-b border-white/5 last:border-0 ${!n.isRead ? 'bg-pepper-gold/5' : ''}`}
+                            >
+                              <p className="text-xs font-bold">{n.sender?.username || 'Someone'}</p>
+                              <p className="text-xs text-pepper-muted mt-0.5">{getNotifMessage(n)}</p>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Profile */}
+                {/* Profile avatar */}
                 <div className="relative" ref={profileRef}>
                   <button
                     onClick={() => setProfileOpen(!profileOpen)}
+                    aria-label="Profile menu"
+                    aria-expanded={profileOpen}
                     className="flex items-center gap-2 p-1 rounded-full border-2 border-white/10 hover:border-pepper-gold/50 transition-all"
                   >
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-sm font-black text-white shadow-xl">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pepper-red to-pepper-gold flex items-center justify-center text-sm font-black text-white shadow-xl">
                       {user?.username?.[0]?.toUpperCase()}
                     </div>
                   </button>
-                  {/* ... existing profile dropdown ... */}
+
+                  {/* Profile dropdown */}
+                  {profileOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-52 rounded-2xl bg-pepper-card border border-white/10 shadow-2xl z-50 overflow-hidden animate-slide-down">
+                      <div className="p-4 border-b border-white/10">
+                        <p className="text-sm font-bold truncate">{user?.username}</p>
+                        <p className="text-xs text-pepper-muted truncate">{user?.email}</p>
+                      </div>
+                      <div className="p-2">
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-pepper-red hover:bg-white/5 transition-colors font-semibold"
+                        >
+                          <FiLogOut size={15} /> Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
-              <Link to="/login" className="btn-primary hidden md:block px-8 py-3 text-xs uppercase font-black tracking-widest">
+              <Link
+                to="/login"
+                className="btn-primary hidden md:inline-flex px-5 py-2 text-xs uppercase font-black tracking-widest"
+              >
                 Sign In
               </Link>
             )}
 
-            {/* STANDALONE THEME TOGGLE */}
+            {/* ── THEME TOGGLE — always visible, outside hamburger ── */}
             <button
               onClick={toggleTheme}
-              className="p-3 rounded-xl bg-white/5 border border-white/10 text-pepper-muted hover:text-pepper-gold hover:border-pepper-gold/30 transition-all"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-pepper-muted hover:text-pepper-gold hover:border-pepper-gold/30 transition-all shrink-0"
             >
-              {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
+              {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
             </button>
 
-            {/* THE ROYAL HAMBURGER */}
+            {/* ── HAMBURGER — opens full mobile menu ── */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex items-center gap-2 p-2 sm:p-3 rounded-lg bg-gradient-to-br from-pepper-gold via-pepper-hot-light to-pepper-hot text-white hover:scale-105 transition-all shadow-lg shadow-pepper-hot/20 group"
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg bg-gradient-to-br from-pepper-gold via-pepper-hot-light to-pepper-red text-white hover:scale-105 transition-all shadow-lg shadow-pepper-red/20"
             >
-              <div className="flex flex-col gap-1">
-                <span className={`h-0.5 w-5 bg-white transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
-                <span className={`h-0.5 w-5 bg-white transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-                <span className={`h-0.5 w-3 bg-white transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5 w-5' : ''}`} />
+              <div className="flex flex-col gap-1.5 shrink-0">
+                <span className={`h-0.5 w-5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                <span className={`h-0.5 w-5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0 scale-x-0' : ''}`} />
+                <span className={`h-0.5 w-3 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2 w-5' : ''}`} />
               </div>
               <span className="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em]">Menu</span>
             </button>
@@ -175,75 +261,90 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile/Side menu */}
+      {/* ── MOBILE MENU ── */}
       {mobileMenuOpen && (
-        <div className="glass border-t border-[var(--border-color)] h-screen animate-slide-down overflow-y-auto fixed inset-0 top-20">
+        <div
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+          className="glass border-t border-[var(--border-color)] fixed inset-0 top-20 z-40 overflow-y-auto animate-slide-down"
+        >
           <div className="section-container py-8 space-y-8 pb-32">
-            {/* User Profile Info */}
+
+            {/* User info banner */}
             {isAuthenticated && (
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pepper-green to-pepper-gold flex items-center justify-center text-xl font-bold shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pepper-red to-pepper-gold flex items-center justify-center text-xl font-bold shadow-lg shrink-0">
                   {user?.username?.[0]?.toUpperCase()}
                 </div>
-                <div>
-                  <p className="font-bold text-lg">{user?.username}</p>
-                  <p className="text-xs text-pepper-muted">{user?.email}</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-base truncate">{user?.username}</p>
+                  <p className="text-xs text-pepper-muted truncate">{user?.email}</p>
                 </div>
               </div>
             )}
 
-            <form onSubmit={handleSearch} className="relative md:hidden">
+            {/* Mobile search */}
+            <form onSubmit={handleSearch} className="relative">
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-pepper-muted" />
               <input
                 type="text"
                 placeholder="Search movies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-pepper-card border border-white/10 rounded-2xl text-lg text-text-main"
+                aria-label="Search movies"
+                className="w-full pl-12 pr-4 py-3.5 bg-pepper-card border border-white/10 rounded-2xl text-base text-text-main placeholder:text-pepper-muted focus:outline-none focus:border-pepper-gold/50"
               />
             </form>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-pepper-gold mb-4">Navigation</h3>
-                <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-4 text-3xl font-black hover:text-pepper-gold transition-colors uppercase tracking-tighter">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {/* Navigation links */}
+              <div className="space-y-5">
+                <h3 className="text-xs font-black uppercase tracking-widest text-pepper-gold mb-2">Navigate</h3>
+                <Link to="/" className={mobileLinkClass('/')}>
+                  {isActive('/') && <span className="w-1.5 h-6 bg-pepper-red rounded-full shrink-0" />}
                   Home
                 </Link>
-                <Link to="/discover" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-4 text-3xl font-black hover:text-pepper-gold transition-colors uppercase tracking-tighter">
-                  Discover
+                <Link to="/discover" className={mobileLinkClass('/discover')}>
+                  {isActive('/discover') && <span className="w-1.5 h-6 bg-pepper-red rounded-full shrink-0" />}
+                  Browse
                 </Link>
-                <Link to="/hall-of-fame" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-4 text-3xl font-black text-pepper-gold hover:text-white transition-colors uppercase tracking-tighter">
-                  Hall of Fame
+                <Link to="/hall-of-fame" className={mobileLinkClass('/hall-of-fame')}>
+                  {isActive('/hall-of-fame') && <span className="w-1.5 h-6 bg-pepper-red rounded-full shrink-0" />}
+                  Top Rated
                 </Link>
               </div>
 
+              {/* Account */}
               <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-pepper-gold mb-4">Social & Account</h3>
+                <h3 className="text-xs font-black uppercase tracking-widest text-pepper-gold mb-2">Account</h3>
+
                 {isAuthenticated && (
-                  <button 
-                    onClick={() => { handleMarkRead(); setMobileMenuOpen(false); }} 
-                    className="flex items-center justify-between w-full text-2xl font-black hover:text-pepper-gold transition-colors uppercase tracking-tighter"
+                  <button
+                    onClick={() => { handleMarkRead(); setMobileMenuOpen(false); }}
+                    className="flex items-center justify-between w-full text-xl font-black hover:text-pepper-gold transition-colors uppercase tracking-tighter"
                   >
-                    <span className="flex items-center gap-4"><FiBell /> Notifications</span>
+                    <span className="flex items-center gap-3"><FiBell /> Notifications</span>
                     {unreadCount > 0 && (
-                      <span className="px-2 py-0.5 bg-pepper-hot text-white text-xs rounded-full">{unreadCount}</span>
+                      <span className="px-2 py-0.5 bg-pepper-red text-white text-xs rounded-full">{unreadCount}</span>
                     )}
                   </button>
                 )}
 
-                <div className="pt-8 mt-8 border-t border-white/10">
+                <div className="pt-6 mt-4 border-t border-white/10">
                   {isAuthenticated ? (
-                    <button 
-                      onClick={() => { handleLogout(); setMobileMenuOpen(false); }} 
-                      className="flex items-center gap-4 text-2xl font-black text-pepper-hot uppercase tracking-tighter"
+                    <button
+                      onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                      className="flex items-center gap-3 text-xl font-black text-pepper-red uppercase tracking-tighter"
                     >
                       <FiLogOut /> Sign Out
                     </button>
                   ) : (
-                    <Link 
-                      to="/login" 
-                      onClick={() => setMobileMenuOpen(false)} 
-                      className="btn-primary flex items-center justify-center py-5 text-2xl uppercase font-black"
+                    <Link
+                      to="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="btn-primary flex items-center justify-center py-4 text-lg uppercase font-black w-full"
                     >
                       Sign In
                     </Link>
@@ -254,7 +355,6 @@ const Navbar = () => {
           </div>
         </div>
       )}
-
     </nav>
   );
 };

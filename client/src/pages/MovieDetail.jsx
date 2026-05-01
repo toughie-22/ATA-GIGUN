@@ -52,8 +52,11 @@ const MovieDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-16">
-        <div className="w-12 h-12 border-3 border-pepper-gold/30 border-t-pepper-gold rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center pt-24">
+        <div className="flex flex-col items-center gap-4">
+          <div className="spinner" />
+          <p className="text-pepper-muted text-sm uppercase tracking-widest font-bold">Loading...</p>
+        </div>
       </div>
     );
   }
@@ -71,7 +74,7 @@ const MovieDetail = () => {
   }
 
   return (
-    <div className="pt-16 pb-20">
+    <div className="pt-24 pb-20">
       {/* Hero backdrop */}
       <div className="relative h-[60vh] overflow-hidden">
         {movie.posterUrl && !imgError ? (
@@ -90,7 +93,7 @@ const MovieDetail = () => {
       <div className="section-container -mt-96 relative z-10">
         <div className="flex flex-col md:flex-row gap-12">
           {/* Poster */}
-          <div className="flex-none w-[280px] sm:w-[320px] mx-auto md:mx-0">
+          <div className="flex-none w-full max-w-[220px] sm:max-w-[280px] md:max-w-[300px] mx-auto md:mx-0">
             <div className="rounded-3xl overflow-hidden shadow-2xl shadow-black/30 border border-white/10 aspect-[2/3] bg-pepper-card relative group">
               {!imgError && movie.posterUrl ? (
                 <img
@@ -114,7 +117,7 @@ const MovieDetail = () => {
           <div className="flex-1 pt-4 md:pt-16">
             <div className="flex flex-wrap items-start gap-4 mb-4">
               <div className="flex-1">
-                <h1 className="text-3xl sm:text-4xl font-bold mb-2 animate-fade-in">{movie.title}</h1>
+                <h1 className="font-bold mb-2 animate-fade-in" style={{ fontSize: 'var(--text-h1)' }}>{movie.title}</h1>
                 <div className="flex flex-wrap items-center gap-3 text-sm text-pepper-muted">
                   <span className="flex items-center gap-1"><FiCalendar size={14} /> {movie.year}</span>
                   <span className="flex items-center gap-1"><FiUser size={14} /> {movie.director}</span>
@@ -145,7 +148,7 @@ const MovieDetail = () => {
             {/* Synopsis */}
             {movie.synopsis && (
               <div className="mb-6">
-                <h3 className="text-sm font-semibold text-pepper-muted uppercase tracking-wider mb-2">Synopsis</h3>
+                <h3 className="text-xs font-bold text-pepper-muted uppercase tracking-widest mb-2">Synopsis</h3>
                 <p className="text-[var(--text-main)] opacity-90 leading-relaxed">{movie.synopsis}</p>
               </div>
             )}
@@ -153,7 +156,7 @@ const MovieDetail = () => {
             {/* Cast */}
             {movie.cast?.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-sm font-semibold text-pepper-muted uppercase tracking-wider mb-2">Cast</h3>
+                <h3 className="text-xs font-bold text-pepper-muted uppercase tracking-widest mb-2">Cast</h3>
                 <div className="flex flex-wrap gap-2">
                   {movie.cast.map((actor, i) => (
                     <span key={i} className="px-3 py-1.5 rounded-lg text-xs bg-pepper-card border border-[var(--border-color)] text-[var(--text-main)]">

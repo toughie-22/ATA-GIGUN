@@ -1,31 +1,60 @@
 @import "tailwindcss";
 
+/* =========================================================
+   ATA GiGUN — Design System
+   Nollywood Ratings & Discovery Platform
+   Primary: Crimson #C0392B | Accent: Gold #D4A017
+   ========================================================= */
+
 @theme {
-  --color-pepper-green: var(--pepper-green);
-  --color-pepper-green-light: var(--pepper-green-light);
+  /* Core brand colors */
+  --color-pepper-red: var(--pepper-red);
+  --color-pepper-red-light: var(--pepper-red-light);
   --color-pepper-gold: var(--pepper-gold);
   --color-pepper-gold-light: var(--pepper-gold-light);
+
+  /* Semantic surface colors */
   --color-pepper-dark: var(--bg-main);
   --color-pepper-card: var(--bg-card);
   --color-pepper-card-hover: var(--bg-card-hover);
+  --color-pepper-surface: var(--bg-surface);
   --color-pepper-muted: var(--text-muted);
+  --color-text-main: var(--text-main);
+
+  /* Legacy aliases — kept for backward compatibility */
+  --color-pepper-green: var(--pepper-green);
+  --color-pepper-green-light: var(--pepper-green-light);
+
+  /* Utility colors */
   --color-pepper-hot: #FF4136;
   --color-pepper-hot-light: #FF6B35;
   --color-pepper-warm: #FF851B;
   --color-pepper-success: #2ECC40;
-  --color-pepper-surface: var(--bg-surface);
-  --color-text-main: var(--text-main);
+
+  /* Font */
   --font-family-sans: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
-  
+
+  /* Shadows */
   --shadow-pepper-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
 }
 
+/* =========================================================
+   CSS CUSTOM PROPERTIES — THEME TOKENS
+   ========================================================= */
 :root {
-  /* Dark Mode (Default) */
-  --pepper-green: #1A5C38;
-  --pepper-green-light: #238C55;
+  /* NEW: Crimson + Gold primary palette */
+  --pepper-red: #C0392B;
+  --pepper-red-light: #E74C3C;
+
+  /* Gold family */
   --pepper-gold: #D4A017;
   --pepper-gold-light: #E8B830;
+
+  /* Legacy green kept for score badges / accents */
+  --pepper-green: #1A5C38;
+  --pepper-green-light: #238C55;
+
+  /* Dark Mode (Default) backgrounds */
   --bg-main: #0D0D0D;
   --bg-card: #1E1E1E;
   --bg-card-hover: #2A2A2A;
@@ -33,14 +62,32 @@
   --text-main: #FFFFFF;
   --text-muted: #AAAAAA;
   --border-color: rgba(255, 255, 255, 0.08);
+
+  /* ── Fluid Typography Scale ──────────────────────────────
+     Uses clamp(min, preferred-vw, max) so text scales
+     smoothly between breakpoints instead of snapping.
+     At 360px: min values apply. At 1280px+: max values apply.
+  */
+  --text-hero:    clamp(1.75rem, 7.5vw, 5rem);     /* H1 hero — 28px → 80px */
+  --text-h1:      clamp(1.5rem,  5vw,   3rem);      /* Page H1 — 24px → 48px */
+  --text-h2:      clamp(1.2rem,  3.5vw, 2rem);      /* Section H2 — 19px → 32px */
+  --text-h3:      clamp(1rem,    2.5vw, 1.5rem);    /* Card/sub H3 — 16px → 24px */
+  --text-body:    clamp(0.9375rem, 1.5vw, 1rem);    /* Body — 15px → 16px */
+  --text-sm:      clamp(0.8125rem, 1.2vw, 0.875rem);/* Small — 13px → 14px */
+  --text-xs:      clamp(0.6875rem, 1vw,  0.75rem);  /* XS — 11px → 12px */
+
+  /* Spacing scale — prefer rem over px for scalability */
+  --nav-height: 5rem; /* 80px — matches h-20 in Navbar */
 }
 
 :root.light {
-  /* Light Mode */
-  --pepper-green: #14532D;
-  --pepper-green-light: #166534;
+  /* Light Mode overrides */
+  --pepper-red: #9B2335;
+  --pepper-red-light: #C0392B;
   --pepper-gold: #B45309;
   --pepper-gold-light: #D97706;
+  --pepper-green: #14532D;
+  --pepper-green-light: #166534;
   --bg-main: #F9FAFB;
   --bg-card: #FFFFFF;
   --bg-card-hover: #F3F4F6;
@@ -50,22 +97,31 @@
   --border-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Base styles */
+/* =========================================================
+   BASE STYLES
+   ========================================================= */
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Prevents flex children from growing beyond their container */
+    min-width: 0;
   }
 
   html {
     scroll-behavior: smooth;
+    /* Prevent horizontal scroll at the root level */
+    overflow-x: hidden;
   }
 
   body {
     background-color: var(--bg-main);
     color: var(--text-main);
     font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: var(--text-body);
     line-height: 1.6;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
@@ -76,18 +132,59 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Improved button active states for mobile */
+  /* Fluid heading defaults */
+  h1 { font-size: var(--text-h1); font-weight: 800; line-height: 1.1; }
+  h2 { font-size: var(--text-h2); font-weight: 700; line-height: 1.2; }
+  h3 { font-size: var(--text-h3); font-weight: 600; line-height: 1.3; }
+
+  /* Images never break layout */
+  img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Minimum 44×44px touch targets on all interactive elements */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Exception: inline text links inside paragraphs */
+  p a, li a, .inline-link {
+    min-height: unset;
+    min-width: unset;
+    display: inline;
+  }
+
+  /* Smooth active scale on mobile tap */
   button:active, a:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
     transition: transform 0.1s ease;
+  }
+
+  /* Comfortable spacing between sibling tappable elements */
+  button + button,
+  a + a,
+  button + a,
+  a + button {
+    /* handled per component — but gap ≥ 8px required */
   }
 }
 
+/* =========================================================
+   COMPONENT UTILITIES
+   ========================================================= */
 @layer components {
+  /* Layout container */
   .section-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* Glassmorphism navbar */
   .glass {
     background: var(--bg-main);
     backdrop-filter: blur(12px);
@@ -95,19 +192,136 @@
     @apply sticky top-0 z-50;
   }
 
+  /* Card background */
   .card-gradient {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
   }
 
+  /* ── Primary CTA Button ───────────────────────────────────
+     NOW uses Crimson → Red-Light gradient (was green)
+  */
   .btn-primary {
-    @apply px-6 py-2.5 rounded-lg bg-pepper-green hover:bg-pepper-green-light text-white font-semibold transition-all duration-300 shadow-lg shadow-pepper-green/20 hover:shadow-pepper-green/40 hover:-translate-y-0.5;
+    background: linear-gradient(135deg, var(--pepper-red), var(--pepper-red-light));
+    color: #fff;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(192, 57, 43, 0.25);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.45);
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, var(--pepper-red-light), var(--pepper-red));
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  /* ── Secondary / Ghost Button ─────────────────────────── */
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(212, 160, 23, 0.1);
+    border-color: rgba(212, 160, 23, 0.3);
+  }
+
+  /* ── Card Tap Overlay (mobile replacement for hover) ──── */
+  .card-tap-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  /* Show on hover (desktop) */
+  @media (hover: hover) {
+    .group:hover .card-tap-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  /* Always show on touch devices (no hover) */
+  @media (hover: none) {
+    .card-tap-overlay.is-tapped {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 }
 
-/* Custom scrollbar */
+/* =========================================================
+   RESPONSIVE BREAKPOINT OVERRIDES
+   Custom breakpoints for Nigerian mobile devices:
+   320px, 360px, 480px which Tailwind doesn't have by default
+   ========================================================= */
+
+/* 1-column grid on very small phones (≤ 359px) */
+@media (max-width: 359px) {
+  .movie-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  body {
+    font-size: 0.9375rem; /* 15px — with line-height 1.6 this is comfortable */
+    line-height: 1.7;
+  }
+
+  .hero-title {
+    font-size: clamp(1.5rem, 10vw, 2rem);
+  }
+}
+
+/* 2-column grid from 360px */
+@media (min-width: 360px) and (max-width: 480px) {
+  .movie-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 3-column grid from 481px to 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .movie-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   CUSTOM SCROLLBAR
+   ========================================================= */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -123,65 +337,154 @@
   background: var(--text-muted);
 }
 
-/* Animations */
+/* Hide scrollbar for horizontal scroll carousels */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-.animate-slide-down {
-  animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-/* Skeleton loading */
-.skeleton {
-  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
 }
 
-/* Text Gradient */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in   { animation: fadeIn  0.4s ease-out forwards; }
+.animate-slide-up  { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-slide-down{ animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-float     { animation: float   4s ease-in-out infinite; }
+.animate-spin      { animation: spin    1s linear infinite; }
+
+/* =========================================================
+   SKELETON LOADING SCREENS
+   ========================================================= */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-card)      25%,
+    var(--bg-card-hover) 50%,
+    var(--bg-card)      75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* =========================================================
+   TEXT UTILITIES
+   ========================================================= */
+
+/* Gold → Red gradient text — primary brand gradient */
 .text-gradient {
-  @apply bg-gradient-to-r from-pepper-gold via-pepper-hot-light to-pepper-hot bg-clip-text text-transparent;
+  background: linear-gradient(135deg, var(--pepper-gold), var(--pepper-red-light), var(--pepper-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Hide scrollbar for horizontal scroll sections */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Crimson accent text */
+.text-pepper-red   { color: var(--pepper-red); }
+.text-pepper-gold  { color: var(--pepper-gold); }
+.text-pepper-muted { color: var(--text-muted); }
+.text-pepper-hot   { color: #FF4136; }
+
+/* =========================================================
+   FORM INPUTS — THEME-AWARE
+   ========================================================= */
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  color: var(--text-main);
+  font-size: var(--text-body);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  min-height: 44px;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.input-field:focus {
+  border-color: var(--pepper-gold);
+  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* Select dropdowns — theme-aware */
+select.input-field,
+select {
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+}
+
+/* =========================================================
+   ACTIVE NAV LINK INDICATOR
+   ========================================================= */
+.nav-link-active {
+  color: var(--pepper-gold) !important;
+  position: relative;
+}
+
+.nav-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pepper-red), var(--pepper-gold));
+  border-radius: 2px;
+}
+
+/* =========================================================
+   ABOUT SECTION
+   ========================================================= */
+.about-strip {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--pepper-red);
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+/* =========================================================
+   LOADING SPINNER
+   ========================================================= */
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgba(212, 160, 23, 0.2);
+  border-top-color: var(--pepper-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
