@@ -108,8 +108,9 @@ const Navbar = () => {
   };
 
   return (
+    <>
     <nav
-      className="fixed top-0 left-0 right-0 z-50 glass"
+      className="fixed top-0 left-0 right-0 z-[70] glass"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -244,118 +245,113 @@ const Navbar = () => {
 
             {/* ── HAMBURGER — opens full mobile menu ── */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              type="button"
+              onClick={() => setMobileMenuOpen(prev => !prev)}
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
-              className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg bg-gradient-to-br from-pepper-gold via-pepper-hot-light to-pepper-red text-white hover:scale-105 transition-all shadow-lg shadow-pepper-red/20"
+              className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg bg-gradient-to-br from-pepper-gold via-pepper-hot-light to-pepper-red text-white transition-colors shadow-lg shadow-pepper-red/20"
             >
-              <div className="flex flex-col gap-1.5 shrink-0">
-                <span className={`h-0.5 w-5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                <span className={`h-0.5 w-5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0 scale-x-0' : ''}`} />
-                <span className={`h-0.5 w-3 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2 w-5' : ''}`} />
+              <div className="flex flex-col gap-1.5 shrink-0 pointer-events-none">
+                <span className={`block h-0.5 w-5 bg-white transition-all duration-300 origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                <span className={`block h-0.5 w-5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0 scale-x-0' : ''}`} />
+                <span className={`block h-0.5 bg-white transition-all duration-300 origin-center ${mobileMenuOpen ? '-rotate-45 -translate-y-2 w-5' : 'w-3'}`} />
               </div>
-              <span className="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em]">Menu</span>
+              <span className="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] pointer-events-none">Menu</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* ── MOBILE MENU ── */}
-      {mobileMenuOpen && (
-        <div
-          id="mobile-menu"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation menu"
-          className="glass border-t border-[var(--border-color)] fixed inset-0 top-20 z-40 overflow-y-auto animate-slide-down"
-        >
-          <div className="section-container py-8 space-y-8 pb-32">
-
-            {/* User info banner */}
-            {isAuthenticated && (
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pepper-red to-pepper-gold flex items-center justify-center text-xl font-bold shadow-lg shrink-0">
-                  {user?.username?.[0]?.toUpperCase()}
-                </div>
-                <div className="min-w-0">
-                  <p className="font-bold text-base truncate">{user?.username}</p>
-                  <p className="text-xs text-pepper-muted truncate">{user?.email}</p>
-                </div>
-              </div>
-            )}
-
-            {/* Mobile search */}
-            <form onSubmit={handleSearch} className="relative">
-              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-pepper-muted" />
-              <input
-                type="text"
-                placeholder="Search movies..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                aria-label="Search movies"
-                className="w-full pl-12 pr-4 py-3.5 bg-pepper-card border border-white/10 rounded-2xl text-base text-text-main placeholder:text-pepper-muted focus:outline-none focus:border-pepper-gold/50"
-              />
-            </form>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {/* Navigation links */}
-              <div className="space-y-5">
-                <h3 className="text-xs font-black uppercase tracking-widest text-pepper-gold mb-2">Navigate</h3>
-                <Link to="/" className={mobileLinkClass('/')}>
-                  {isActive('/') && <span className="w-1.5 h-6 bg-pepper-red rounded-full shrink-0" />}
-                  Home
-                </Link>
-                <Link to="/discover" className={mobileLinkClass('/discover')}>
-                  {isActive('/discover') && <span className="w-1.5 h-6 bg-pepper-red rounded-full shrink-0" />}
-                  Browse
-                </Link>
-                <Link to="/hall-of-fame" className={mobileLinkClass('/hall-of-fame')}>
-                  {isActive('/hall-of-fame') && <span className="w-1.5 h-6 bg-pepper-red rounded-full shrink-0" />}
-                  Top Rated
-                </Link>
-              </div>
-
-              {/* Account */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-pepper-gold mb-2">Account</h3>
-
-                {isAuthenticated && (
-                  <button
-                    onClick={() => { handleMarkRead(); setMobileMenuOpen(false); }}
-                    className="flex items-center justify-between w-full text-xl font-black hover:text-pepper-gold transition-colors uppercase tracking-tighter"
-                  >
-                    <span className="flex items-center gap-3"><FiBell /> Notifications</span>
-                    {unreadCount > 0 && (
-                      <span className="px-2 py-0.5 bg-pepper-red text-white text-xs rounded-full">{unreadCount}</span>
-                    )}
-                  </button>
-                )}
-
-                <div className="pt-6 mt-4 border-t border-white/10">
-                  {isAuthenticated ? (
-                    <button
-                      onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                      className="flex items-center gap-3 text-xl font-black text-pepper-red uppercase tracking-tighter"
-                    >
-                      <FiLogOut /> Sign Out
-                    </button>
-                  ) : (
-                    <Link
-                      to="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="btn-primary flex items-center justify-center py-4 text-lg uppercase font-black w-full"
-                    >
-                      Sign In
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
+
+      {/* ── MOBILE MENU — rendered OUTSIDE <nav> to escape backdrop-filter containing block ── */}
+      <div
+        id="mobile-menu"
+        role="dialog"
+        aria-modal={mobileMenuOpen}
+        aria-label="Navigation menu"
+        aria-hidden={!mobileMenuOpen}
+        style={{
+          visibility: mobileMenuOpen ? 'visible' : 'hidden',
+          opacity: mobileMenuOpen ? 1 : 0,
+          transform: mobileMenuOpen ? 'translateY(0)' : 'translateY(-12px)',
+          transition: 'opacity 0.3s ease, transform 0.3s ease, visibility 0s linear ' + (mobileMenuOpen ? '0s' : '0.3s'),
+          pointerEvents: mobileMenuOpen ? 'auto' : 'none',
+          background: 'rgba(13,13,13,0.97)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+        }}
+        className="fixed left-0 right-0 top-20 bottom-0 z-[80] overflow-y-auto flex flex-col text-white"
+      >
+        {/* ── Clean minimal menu layout ── */}
+        <div className="flex flex-col h-full px-6 pt-10 pb-12 max-w-lg mx-auto w-full">
+
+          {/* Brand pill */}
+          <div className="flex items-center gap-2 mb-10">
+            <GiChiliPepper className="text-2xl text-pepper-red" />
+            <span className="text-sm font-black uppercase tracking-[0.25em] text-white/50">ATA GiGUN</span>
+          </div>
+
+          {/* Nav links */}
+          <nav className="flex flex-col gap-1 flex-grow">
+            {[
+              { to: '/', label: 'Home' },
+              { to: '/discover', label: 'Browse' },
+              { to: '/hall-of-fame', label: 'Top Rated' },
+            ].map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`group flex items-center justify-between py-4 border-b border-white/8 transition-all duration-200 ${
+                  isActive(to) ? 'text-pepper-gold' : 'text-white hover:text-pepper-gold'
+                }`}
+              >
+                <span className="text-3xl font-black uppercase tracking-tight leading-none">
+                  {label}
+                </span>
+                <span className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  isActive(to) ? 'bg-pepper-red scale-100' : 'bg-white/20 scale-75 group-hover:bg-pepper-gold group-hover:scale-100'
+                }`} />
+              </Link>
+            ))}
+          </nav>
+
+          {/* Bottom auth section */}
+          <div className="mt-10 pt-6 border-t border-white/10">
+            {isAuthenticated ? (
+              <div className="flex items-center justify-between">
+                {/* User pill */}
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pepper-red to-pepper-gold flex items-center justify-center text-sm font-black shadow-lg shrink-0">
+                    {user?.username?.[0]?.toUpperCase()}
+                  </div>
+                  <p className="font-bold text-sm truncate max-w-[140px]">{user?.username}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                  className="flex items-center gap-2 text-sm font-bold text-pepper-red uppercase tracking-widest hover:opacity-70 transition-opacity"
+                >
+                  <FiLogOut size={15} /> Out
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center w-full py-3.5 rounded-xl font-black uppercase tracking-widest text-sm text-white transition-all"
+                style={{ background: 'linear-gradient(135deg, #C0392B, #D4A017)' }}
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </>
   );
 };
 

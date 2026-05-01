@@ -189,7 +189,6 @@
     background: var(--bg-main);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
-    @apply sticky top-0 z-50;
   }
 
   /* Card background */
